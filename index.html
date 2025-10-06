@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Deadlock Types | Operating Systems</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Added animated particle background -->
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Deadlock<span class="accent">OS</span></div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#types" class="nav-link">Types</a></li>
+                <li><a href="#interactive" class="nav-link">Interactive Lab</a></li>
+                <li><a href="#demo" class="nav-link">Live Demo</a></li>
+                <li><a href="#references" class="nav-link">References</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Understanding <span class="gradient-text">Deadlock</span> in Operating Systems</h1>
+            <p class="hero-subtitle">Explore the critical challenges of resource management and process synchronization</p>
+            <div class="hero-buttons">
+                <button class="cta-button" onclick="scrollToSection('interactive')">Try Interactive Lab</button>
+                <button class="cta-button secondary" onclick="scrollToSection('types')">Learn Types</button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="deadlock-animation">
+                <div class="process process-a" id="processA">
+                    <span>Process A</span>
+                    <div class="process-pulse"></div>
+                </div>
+                <div class="process process-b" id="processB">
+                    <span>Process B</span>
+                    <div class="process-pulse"></div>
+                </div>
+                <div class="resource resource-1" id="resource1">
+                    <span>R1</span>
+                </div>
+                <div class="resource resource-2" id="resource2">
+                    <span>R2</span>
+                </div>
+                <svg class="connection-lines" id="connectionLines"></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction -->
+    <section class="intro-section">
+        <div class="container">
+            <h2 class="section-title">What is Deadlock?</h2>
+            <p class="intro-text">
+                Deadlock is one of the most critical challenges in operating systems, occurring when processes become permanently blocked, 
+                waiting for resources that will never become available. In a multi-process environment where resources such as CPU cycles, 
+                memory, I/O devices, and file handles are shared, deadlock situations can bring system execution to a complete halt.
+            </p>
+            <!-- Added interactive stats cards -->
+            <div class="stats-grid">
+                <div class="stat-card" data-stat="4">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Necessary Conditions</div>
+                </div>
+                <div class="stat-card" data-stat="3">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Main Classifications</div>
+                </div>
+                <div class="stat-card" data-stat="5">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Deadlock Types</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Types Section -->
+    <section id="types" class="types-section">
+        <div class="container">
+            <h2 class="section-title">Classification of Deadlock Types</h2>
+            
+            <div class="types-grid">
+                <!-- Resource-Based Classification -->
+                <div class="type-category">
+                    <h3 class="category-title">Resource-Based Classification</h3>
+                    
+                    <div class="type-card" onclick="toggleCard(this)">
+                        <div class="card-header">
+                            <div class="card-icon">🔄</div>
+                            <h4>Reusable Resource Deadlock</h4>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Occurs when processes compete for resources that can be used repeatedly, such as processors, memory blocks, I/O devices, and data structures.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> Process A holds Resource 1 and requests Resource 2, while Process B holds Resource 2 and requests Resource 1, creating a circular wait condition.
+                            </div>
+                            <!-- Added unique demonstration for reusable resource deadlock -->
+                            <div class="demo-visualization-inline" id="demo-reusable">
+                                <div class="inline-process" data-name="P1">P1</div>
+                                <div class="inline-resource" data-name="R1">R1</div>
+                                <div class="inline-resource" data-name="R2">R2</div>
+                                <div class="inline-process" data-name="P2">P2</div>
+                                <svg class="inline-connections"></svg>
+                            </div>
+                            <button class="demo-button" onclick="event.stopPropagation(); showTypeDemo('reusable')">Start Demo</button>
+                        </div>
+                    </div>
+
+                    <div class="type-card" onclick="toggleCard(this)">
+                        <div class="card-header">
+                            <div class="card-icon">📨</div>
+                            <h4>Consumable Resource Deadlock</h4>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Arises with resources that are created and destroyed dynamically, such as messages, signals, and interrupts.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> Process A waits for a signal from Process B, and Process B waits for a signal from Process A, both remaining indefinitely blocked.
+                            </div>
+                            <!-- Added unique demonstration for consumable resource deadlock -->
+                            <div class="demo-visualization-inline" id="demo-consumable">
+                                <div class="inline-process" data-name="P1">
+                                    <div class="process-label">P1</div>
+                                    <div class="message-queue">📬</div>
+                                </div>
+                                <div class="message-flow">
+                                    <div class="message">📧</div>
+                                </div>
+                                <div class="inline-process" data-name="P2">
+                                    <div class="process-label">P2</div>
+                                    <div class="message-queue">📬</div>
+                                </div>
+                            </div>
+                            <button class="demo-button" onclick="event.stopPropagation(); showTypeDemo('consumable')">Start Demo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Communication-Based Classification -->
+                <div class="type-category">
+                    <h3 class="category-title">Communication-Based Classification</h3>
+                    
+                    <div class="type-card" onclick="toggleCard(this)">
+                        <div class="card-header">
+                            <div class="card-icon">🔒</div>
+                            <h4>Synchronization Deadlock</h4>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Happens when processes use synchronization primitives such as semaphores, mutexes, and monitors incorrectly.</p>
+                            <div class="example-box">
+                                <strong>Example:</strong> Process A acquires Lock 1 and tries to acquire Lock 2, while Process B acquires Lock 2 and tries to acquire Lock 1 (nested locking).
+                            </div>
+                            <!-- Added unique demonstration for synchronization deadlock -->
+                            <div class="demo-visualization-inline" id="demo-synchronization">
+                                <div class="inline-process" data-name="Thread1">
+                                    <div class="thread-label">Thread 1</div>
+                                    <div class="lock-status">🔓</div>
+                                </div>
+                                <div class="inline-lock" data-name="Lock1">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="lock-label">Lock 1</div>
+                                </div>
+                                <div class="inline-lock" data-name="Lock2">
+                                    <div class="lock-icon">🔒</div>
+                                    <div class="lock-label">Lock 2</div>
+                                </div>
+                                <div class="inline-process" data-name="Thread2">
+                                    <div class="thread-label">Thread 2</div>
+                                    <div class="lock-status">🔓</div>
+                                </div>
+                                <svg class="inline-connections"></svg>
+                            </div>
+                            <button class="demo-button" onclick="event.stopPropagation(); showTypeDemo('synchronization')">Start Demo</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temporal Classification -->
+                <div class="type-category">
+                    <h3 class="category-title">Temporal Classification</h3>
+                    
+                    <div class="type-card" onclick="toggleCard(this)">
+                        <div class="card-header">
+                            <div class="card-icon">⚡</div>
+                            <h4>Static Deadlock</h4>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Occurs when resource requirements and allocation patterns are determined before execution begins. The deadlock is inherent in the program design.</p>
+                            <div class="example-box">
+                                <strong>Characteristic:</strong> Easier to detect and prevent through careful system design and static analysis.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="type-card" onclick="toggleCard(this)">
+                        <div class="card-header">
+                            <div class="card-icon">⏱️</div>
+                            <h4>Dynamic Deadlock</h4>
+                            <span class="expand-icon">+</span>
+                        </div>
+                        <div class="card-content">
+                            <p>Develops during runtime based on the actual execution sequence and timing of resource requests.</p>
+                            <div class="example-box">
+                                <strong>Characteristic:</strong> More challenging to predict and handle because it depends on runtime conditions that may vary across executions.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Added new interactive lab section with drag and drop -->
+    <section id="interactive" class="interactive-section">
+        <div class="container">
+            <h2 class="section-title">Interactive Deadlock Lab</h2>
+            <p class="section-subtitle">Drag processes and resources to create or prevent deadlock scenarios</p>
+            
+            <div class="lab-container">
+                <div class="lab-sidebar">
+                    <h3>Available Elements</h3>
+                    <div class="draggable-items">
+                        <div class="draggable-item process-item" draggable="true" data-type="process">
+                            <span class="item-icon">⚙️</span>
+                            <span>Process</span>
+                        </div>
+                        <div class="draggable-item resource-item" draggable="true" data-type="resource">
+                            <span class="item-icon">💾</span>
+                            <span>Resource</span>
+                        </div>
+                    </div>
+                    <div class="lab-controls">
+                        <button class="lab-button" onclick="checkDeadlock()">Check for Deadlock</button>
+                        <button class="lab-button secondary" onclick="clearLab()">Clear Lab</button>
+                    </div>
+                    <div class="lab-result" id="labResult"></div>
+                </div>
+                
+                <div class="lab-canvas" id="labCanvas">
+                    <div class="canvas-hint">Drop processes and resources here, then click to connect them</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <h2 class="section-title">Live Deadlock Demonstration</h2>
+            <p class="section-subtitle">Watch how deadlock occurs in real-time</p>
+            
+            <div class="demo-container">
+                <div class="demo-controls">
+                    <button class="control-button" onclick="startDemo()">
+                        <span class="button-icon">▶</span>
+                        Start Simulation
+                    </button>
+                    <button class="control-button secondary" onclick="resetDemo()">
+                        <span class="button-icon">↻</span>
+                        Reset
+                    </button>
+                    <button class="control-button tertiary" onclick="pauseDemo()">
+                        <span class="button-icon">⏸</span>
+                        Pause
+                    </button>
+                </div>
+                
+                <div class="demo-visualization" id="demoVisualization">
+                    <div class="demo-process" id="demoProcessA">
+                        <div class="process-label">Process A</div>
+                        <div class="process-status" id="statusA">Waiting...</div>
+                        <div class="process-indicator"></div>
+                    </div>
+                    
+                    <div class="demo-resources">
+                        <div class="demo-resource" id="demoResource1">
+                            <div class="resource-label">Resource 1</div>
+                            <div class="resource-holder" id="holder1">Available</div>
+                            <div class="resource-glow"></div>
+                        </div>
+                        <div class="demo-resource" id="demoResource2">
+                            <div class="resource-label">Resource 2</div>
+                            <div class="resource-holder" id="holder2">Available</div>
+                            <div class="resource-glow"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="demo-process" id="demoProcessB">
+                        <div class="process-label">Process B</div>
+                        <div class="process-status" id="statusB">Waiting...</div>
+                        <div class="process-indicator"></div>
+                    </div>
+                    
+                    <!-- Added animated connection arrows -->
+                    <svg class="demo-connections" id="demoConnections"></svg>
+                </div>
+                
+                <div class="demo-log" id="demoLog">
+                    <h4>Execution Log</h4>
+                    <div class="log-content" id="logContent">
+                        <p class="log-entry">Click "Start Simulation" to begin...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusion Section -->
+    <section class="conclusion-section">
+        <div class="container">
+            <h2 class="section-title">Key Takeaways</h2>
+            <div class="takeaways-grid">
+                <div class="takeaway-card">
+                    <div class="takeaway-number">01</div>
+                    <h4>Multiple Classifications</h4>
+                    <p>Deadlock can be classified by resource type, communication method, and temporal characteristics.</p>
+                </div>
+                <div class="takeaway-card">
+                    <div class="takeaway-number">02</div>
+                    <h4>Prevention Strategies</h4>
+                    <p>Understanding deadlock types enables implementation of appropriate prevention and avoidance mechanisms.</p>
+                </div>
+                <div class="takeaway-card">
+                    <div class="takeaway-number">03</div>
+                    <h4>System Design</h4>
+                    <p>Careful system design and resource management are critical for ensuring reliability and performance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="references-section">
+        <div class="container">
+            <h2 class="section-title">References</h2>
+            <ul class="references-list">
+                <li>Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). <em>Operating System Concepts</em> (10th ed.). Wiley.</li>
+                <li>Tanenbaum, A. S., & Bos, H. (2015). <em>Modern Operating Systems</em> (4th ed.). Pearson.</li>
+                <li>Stallings, W. (2018). <em>Operating Systems: Internals and Design Principles</em> (9th ed.). Pearson.</li>
+                <li>Coffman, E. G., Elphick, M., & Shoshani, A. (1971). System Deadlocks. <em>ACM Computing Surveys</em>, 3(2), 67-78.</li>
+            </ul>
+        </div>
+    </section>
+
+
+
+    <script src="script.js"></script>
+</body>
+</html>
