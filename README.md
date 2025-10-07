@@ -5,7 +5,7 @@ Built using **HTML, CSS, and JavaScript**, this project combines theory with han
 
 ---
 
-## 🌐 Live Preview
+## 🌐 Live Preview of the project
 [👉 View Project Live]
 
 https://deadlocks-in-operating-system.vercel.app/
