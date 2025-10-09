@@ -145,6 +145,11 @@ body {
   flex-wrap: wrap;
 }
 
+.hero-visual {
+  margin-top: 4rem;
+  margin-left: 8rem;
+}
+
 .cta-button {
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
